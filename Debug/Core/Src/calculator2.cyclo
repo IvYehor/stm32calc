@@ -1,0 +1,11 @@
+../Core/Src/calculator2.c:4:6:computeEquation	3
+../Core/Src/calculator2.c:20:9:evaluate	17
+../Core/Src/calculator2.c:74:6:pasteToExpression	5
+../Core/Src/calculator2.c:92:6:pasteErrorToExpression	5
+../Core/Src/calculator2.c:119:14:parseE	8
+../Core/Src/calculator2.c:154:14:parseT	8
+../Core/Src/calculator2.c:192:14:parseF	8
+../Core/Src/calculator2.c:235:9:nextToken	5
+../Core/Src/calculator2.c:248:9:lastToken	1
+../Core/Src/calculator2.c:252:9:getToken	4
+../Core/Src/calculator2.c:267:9:isNum	3

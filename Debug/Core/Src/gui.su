@@ -1,0 +1,6 @@
+../Core/Src/gui.c:12:6:drawExpression	24	static
+../Core/Src/gui.c:23:6:drawMenu	16	static
+../Core/Src/gui.c:37:6:addChar	32	static
+../Core/Src/gui.c:50:6:moveLeft	24	static
+../Core/Src/gui.c:57:6:moveRight	24	static
+../Core/Src/gui.c:64:6:nextPage	16	static
