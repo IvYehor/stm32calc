@@ -1,0 +1,10 @@
+18:02:16 **** Incremental Build of configuration Debug for project pr3 ****
+make -j12 all 
+arm-none-eabi-size   pr3.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12016	    120	   2040	  14176	   3760	pr3.elf
+Finished building: default.size.stdout
+ 
+
+18:02:16 Build Finished. 0 errors, 0 warnings. (took 623ms)
+

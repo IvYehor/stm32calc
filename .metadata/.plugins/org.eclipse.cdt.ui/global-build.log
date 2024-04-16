@@ -1,0 +1,40 @@
+18:02:12 **** Incremental Build of configuration Debug for project pr3 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103x6 -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/lcddisplay.h:24:16: warning: 'LCDblinkOn_' defined but not used [-Wunused-variable]
+   24 | static uint8_t LCDblinkOn_;
+      |                ^~~~~~~~~~~
+../Core/Inc/lcddisplay.h:23:16: warning: 'LCDcursorOn_' defined but not used [-Wunused-variable]
+   23 | static uint8_t LCDcursorOn_;
+      |                ^~~~~~~~~~~~
+../Core/Inc/lcddisplay.h:22:16: warning: 'LCDdisplayOn_' defined but not used [-Wunused-variable]
+   22 | static uint8_t LCDdisplayOn_;
+      |                ^~~~~~~~~~~~~
+../Core/Inc/lcddisplay.h:20:27: warning: 'hi2c1Ptr_' defined but not used [-Wunused-variable]
+   20 | static I2C_HandleTypeDef *hi2c1Ptr_;
+      |                           ^~~~~~~~~
+arm-none-eabi-gcc -o "pr3.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/yehor/Projects/stm32/w3/pr3/STM32F103C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="pr3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: pr3.elf
+ 
+arm-none-eabi-size   pr3.elf 
+arm-none-eabi-objdump -h -S  pr3.elf  > "pr3.list"
+arm-none-eabi-objcopy  -O ihex  pr3.elf  "pr3.hex"
+arm-none-eabi-objcopy  -O binary  pr3.elf  "pr3.bin"
+   text	   data	    bss	    dec	    hex	filename
+  12016	    120	   2040	  14176	   3760	pr3.elf
+Finished building: default.size.stdout
+ 
+Finished building: pr3.bin
+Finished building: pr3.hex
+ 
+ 
+Finished building: pr3.list
+ 
+18:02:16 **** Incremental Build of configuration Debug for project pr3 ****
+make -j12 all 
+arm-none-eabi-size   pr3.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12016	    120	   2040	  14176	   3760	pr3.elf
+Finished building: default.size.stdout
+ 
