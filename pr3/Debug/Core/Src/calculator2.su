@@ -1,0 +1,12 @@
+../Core/Src/calculator2.c:4:6:computeEquation	32	static
+../Core/Src/calculator2.c:22:6:freeTree	16	static
+../Core/Src/calculator2.c:31:9:evaluate	32	static
+../Core/Src/calculator2.c:85:6:pasteToExpression	32	static
+../Core/Src/calculator2.c:107:6:pasteErrorToExpression	32	static
+../Core/Src/calculator2.c:134:14:parseE	56	static
+../Core/Src/calculator2.c:169:14:parseT	56	static
+../Core/Src/calculator2.c:207:14:parseF	56	static
+../Core/Src/calculator2.c:250:9:nextToken	24	static
+../Core/Src/calculator2.c:263:9:lastToken	16	static
+../Core/Src/calculator2.c:267:9:getToken	32	static
+../Core/Src/calculator2.c:282:9:isNum	16	static

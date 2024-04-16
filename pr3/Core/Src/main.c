@@ -153,12 +153,18 @@ int main(void)
   LCDsetBlink(1);
   redraw = 1;
   redrawmenu = 1;
+
+  uint32_t timerblink = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if(HAL_GetTick()-timerblink > 1000) {
+		HAL_GPIO_TogglePin(LEDPCB_GPIO_Port, LEDPCB_Pin);
+		timerblink = HAL_GetTick();
+	}
 	if(redraw) {
 		redraw = 0;
 		drawExpression(expression, cursor, shift, filled, EXPRWIDTH, SCREENWIDTH);

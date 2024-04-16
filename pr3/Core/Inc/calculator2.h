@@ -21,8 +21,9 @@ struct Node {
 	struct Node *rNode;
 };
 
-void computeEquation(uint8_t *expression, uint8_t *filled, uint8_t exprWidth);
+void computeEquation(uint8_t *expression, uint8_t *filled, const uint8_t exprWidth);
 uint8_t evaluate(struct Node *eq, uint32_t *result);
+void freeTree(struct Node *eq);
 void pasteToExpression(uint8_t *expression, uint8_t *filled, uint8_t exprWidth, uint32_t value);
 void pasteErrorToExpression(uint8_t *expression, uint8_t *filled, uint8_t exprWidth, uint8_t error);
 

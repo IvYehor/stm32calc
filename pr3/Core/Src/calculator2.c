@@ -1,21 +1,32 @@
 
 #include "calculator2.h"
 
-void computeEquation(uint8_t *expression, uint8_t *filled, uint8_t exprWidth) {
+void computeEquation(uint8_t *expression, uint8_t *filled, const uint8_t exprWidth) {
 	uint8_t nextTokenBegin, nextTokenEnd;
 	struct Node *tree = parseE(expression, *filled, &nextTokenBegin, &nextTokenEnd);
-	if(tree == NULL) {
-		pasteErrorToExpression(expression, filled, exprWidth, 0);
+	/*if(tree == NULL) {
+		pasteToExpression(expression, filled, exprWidth, 4);
+		//pasteErrorToExpression(expression, filled, exprWidth, 0);
 		return;
 	}
-	uint32_t res;
-	if(!evaluate(tree, &res)) {
+	uint32_t res = 4;
+	if(!evaluate(tree, &res) || 1) {
 		pasteToExpression(expression, filled, exprWidth, res);
 	}
 	else {
 		pasteErrorToExpression(expression, filled, exprWidth, 1);
-	}
+	}*/
+	freeTree(tree);
 }
+
+void freeTree(struct Node *eq) {
+	if(eq->lNode != NULL)
+			freeTree(eq->lNode);
+	if(eq->rNode != NULL)
+			freeTree(eq->rNode);
+	free(eq);
+}
+
 
 uint8_t evaluate(struct Node *eq, uint32_t *result) {
 	uint32_t a, b;
@@ -73,6 +84,10 @@ uint8_t evaluate(struct Node *eq, uint32_t *result) {
 }
 void pasteToExpression(uint8_t *expression, uint8_t *filled, uint8_t exprWidth, uint32_t value) {
 	uint8_t i = 0;
+	if(value == 0) {
+		expression[0] = 48;
+		i=1;
+	}
 	while(value && i < exprWidth) {
 		expression[i] = value%10+48;
 		value/=10;
