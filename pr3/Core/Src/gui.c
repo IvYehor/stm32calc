@@ -22,9 +22,10 @@ void drawExpression(uint8_t *expression, uint8_t cursor, uint8_t shift, uint8_t 
 
 void drawMenu(uint8_t page, uint8_t screenwidth, uint8_t (*pages)[3], uint8_t numofpages, uint8_t cursorScreen) {
 	LCDsetCursorPos(1, 0);
-	//uint8_t *t = "Page ";
-	//LCDwriteText(t);
+	uint8_t *t = "Page ";
+	LCDwriteText(t);
 	LCDwrite(page + 48);
+	LCDwrite(' ');
 	LCDwrite(' ');
 	LCDwrite(pages[page][0]);
 	LCDwrite(' ');

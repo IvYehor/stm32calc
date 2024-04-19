@@ -2,9 +2,9 @@
 #include "calculator2.h"
 
 void computeEquation(uint8_t *expression, uint8_t *filled, const uint8_t exprWidth) {
-	uint8_t nextTokenBegin, nextTokenEnd;
+	uint8_t nextTokenBegin = 0, nextTokenEnd = 0;
 	struct Node *tree = parseE(expression, *filled, &nextTokenBegin, &nextTokenEnd);
-	/*if(tree == NULL) {
+	if(tree == NULL) {
 		pasteToExpression(expression, filled, exprWidth, 4);
 		//pasteErrorToExpression(expression, filled, exprWidth, 0);
 		return;
@@ -15,7 +15,7 @@ void computeEquation(uint8_t *expression, uint8_t *filled, const uint8_t exprWid
 	}
 	else {
 		pasteErrorToExpression(expression, filled, exprWidth, 1);
-	}*/
+	}
 	freeTree(tree);
 }
 
@@ -139,22 +139,31 @@ struct Node *parseE(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin
 	uint8_t tokentype;
 	uint32_t tokenVal;
 
-	while(!lastToken(filled, *nextTokenEnd)) {
-		getToken(expression, *nextTokenBegin, *nextTokenEnd, &tokentype, &tokenVal);
+	uint8_t nextTokenBeginTemp = *nextTokenBegin, nextTokenEndTemp = *nextTokenEnd;
+	//!lastToken(filled, *nextTokenEnd)
+	while(!nextToken(expression, filled, &nextTokenBeginTemp, &nextTokenEndTemp)) {
+		getToken(expression, nextTokenBeginTemp, nextTokenEndTemp, &tokentype, &tokenVal);
 		if(tokentype == 0) {
+			freeTree(f);
 			return NULL;
 		}
 		if(tokenVal == '+' || tokenVal == '-') {
+			*nextTokenBegin = nextTokenBeginTemp;
+			*nextTokenEnd = nextTokenEndTemp;
 			struct Node *f2 = parseT(expression, filled, nextTokenBegin, nextTokenEnd);
-			if(f2 == NULL)
+			nextTokenBeginTemp = *nextTokenBegin;
+			nextTokenEndTemp = *nextTokenEnd;
+			if(f2 == NULL) {
+				freeTree(f);
 				return NULL;
-			struct Node *ret = malloc(sizeof(struct Node));
+			}
+			struct Node *ret = (struct Node *)malloc(sizeof(struct Node));
 			ret->type=tokenVal=='+' ? ADD : SUB;
 			ret->lNode = f;
 			ret->rNode = f2;
 			f = ret;
 		}
-		else {
+		else { // Problem that it nexts the next token here
 			//return NULL;
 			break;
 		}
@@ -174,16 +183,25 @@ struct Node *parseT(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin
 	uint8_t tokentype;
 	uint32_t tokenVal;
 
-	while(!nextToken(expression, filled, nextTokenBegin, nextTokenEnd)) {
-		getToken(expression, *nextTokenBegin, *nextTokenEnd, &tokentype, &tokenVal);
+	uint8_t nextTokenBeginTemp = *nextTokenBegin, nextTokenEndTemp = *nextTokenEnd;
+	//!lastToken(filled, *nextTokenEnd)
+	while(!nextToken(expression, filled, &nextTokenBeginTemp, &nextTokenEndTemp)) {
+		getToken(expression, nextTokenBeginTemp, nextTokenEndTemp, &tokentype, &tokenVal);
 		if(tokentype == 0) {
+			freeTree(f);
 			return NULL;
 		}
 		if(tokenVal == '*' || tokenVal == '/') {
+			*nextTokenBegin = nextTokenBeginTemp;
+			*nextTokenEnd = nextTokenEndTemp;
 			struct Node *f2 = parseF(expression, filled, nextTokenBegin, nextTokenEnd);
-			if(f2 == NULL)
+			nextTokenBeginTemp = *nextTokenBegin;
+			nextTokenEndTemp = *nextTokenEnd;
+			if(f2 == NULL) {
+				freeTree(f);
 				return NULL;
-			struct Node *ret = malloc(sizeof(struct Node));
+			}
+			struct Node *ret = (struct Node *)malloc(sizeof(struct Node));
 			ret->type=tokenVal=='*' ? MULT : DIV;
 			ret->lNode = f;
 			ret->rNode = f2;
@@ -211,15 +229,18 @@ struct Node *parseF(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin
 	uint32_t tokenVal;
 	getToken(expression, *nextTokenBegin, *nextTokenEnd, &tokentype, &tokenVal);
 	if(tokentype == 0) {
-		struct Node *ret = malloc(sizeof(struct Node));
+		struct Node *ret = (struct Node *)malloc(sizeof(struct Node));
 		ret->type = NUMBER;
 		ret->value = tokenVal;
+		ret->lNode = NULL;
+		ret->rNode = NULL;
 		return ret;
 	}
 	else if(tokenVal == '(') {
+		//nextToken(expression, filled, nextTokenBegin, nextTokenEnd);
 		struct Node *r = parseE(expression, filled, nextTokenBegin, nextTokenEnd);
-		//if(nextToken(expression, filled, nextTokenBegin, nextTokenEnd))
-		//	return NULL;
+		if(nextToken(expression, filled, nextTokenBegin, nextTokenEnd))
+			return NULL;
 		getToken(expression, *nextTokenBegin, *nextTokenEnd, &tokentype, &tokenVal);
 		if(tokentype == 1 && tokenVal == ')')
 			return r;
@@ -230,9 +251,10 @@ struct Node *parseF(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin
 		struct Node *r = parseF(expression, filled, nextTokenBegin, nextTokenEnd);
 		if(r == NULL)
 			return NULL;
-		struct Node *ret = malloc(sizeof(struct Node));
+		struct Node *ret = (struct Node *)malloc(sizeof(struct Node));
 		ret->type = NEG;
 		ret->lNode = r;
+		ret->rNode = NULL;
 		return ret;
 	}
 	else {
@@ -247,6 +269,7 @@ struct Node *parseF(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin
 // *nextTokenBegin is in [0, filled]
 // returns 1 when no more tokens
 // return 0 when got a token
+
 uint8_t nextToken(uint8_t *expression, uint8_t filled, uint8_t *nextTokenBegin, uint8_t *nextTokenEnd) {
 	if(*nextTokenEnd >= filled) 
 		return 1;
